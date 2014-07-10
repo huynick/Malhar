@@ -45,19 +45,20 @@ public interface Store
    * teardown store.
    */
   void teardown();
+  
+  /**
+   * Sets the value of a key in the store.
+   *
+   * @param key   key
+   * @param value value of the key.
+   */
+  void setValueFor(Object key, Object value);
 
   /**
    * A primary store should also provide setting the value for a key.
    */
   public static interface Primary extends Store
   {
-    /**
-     * Sets the value of a key in the store.
-     *
-     * @param key   key
-     * @param value value of the key.
-     */
-    void setValueFor(Object key, Object value);
 
     /**
      * Get all the keys in the store.

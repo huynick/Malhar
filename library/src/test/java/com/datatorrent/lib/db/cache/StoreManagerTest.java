@@ -86,6 +86,11 @@ public class StoreManagerTest
     {
       //Do nothing
     }
+
+	@Override
+	public void setValueFor(Object key, Object value) {
+		backupMap.put(key, value);
+	}
   }
 
   @Test

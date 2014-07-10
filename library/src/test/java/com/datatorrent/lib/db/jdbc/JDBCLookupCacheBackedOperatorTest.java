@@ -127,6 +127,19 @@ public class JDBCLookupCacheBackedOperatorTest
       return null;
     }
 
+	@Override
+	public void setValueFor(Object key, Object value) {
+		String query = "INSERT INTO " + TABLE_NAME + " (col1, col2) VALUES (" + key + ", '" + value + "')";
+	      Statement stmt;
+	      try {
+	        stmt = store.connection.createStatement();
+	        stmt.execute(query);
+	      }
+	      catch (SQLException e) {
+	        throw new RuntimeException("while setting value for key", e);
+	      }
+	}
+
   }
 
   @Test
