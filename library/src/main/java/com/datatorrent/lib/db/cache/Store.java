@@ -18,6 +18,8 @@ package com.datatorrent.lib.db.cache;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 /**
  * A store which could be a memory store or a database store.
  *
@@ -31,7 +33,7 @@ public interface Store
    * @param key the key to look for.
    * @return value of the key.
    */
-  Object getValueFor(Object key);
+  Object get(Object key);
 
   /**
    * <br>Retrieve the values of a set of keys.</br>
@@ -52,7 +54,7 @@ public interface Store
    * @param key   key
    * @param value value of the key.
    */
-  void setValueFor(Object key, Object value);
+  void put(@Nonnull Object key, @Nonnull Object value);
 
   /**
    * A primary store should also provide setting the value for a key.
