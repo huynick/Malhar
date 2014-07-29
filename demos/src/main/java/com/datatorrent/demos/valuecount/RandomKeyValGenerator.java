@@ -20,8 +20,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-
-import org.apache.commons.lang3.mutable.MutableInt;
+    
 import org.slf4j.*;
 
 import com.datatorrent.api.Context.OperatorContext;
@@ -31,7 +30,7 @@ import com.datatorrent.api.annotation.OutputPortFieldAnnotation;
 import com.datatorrent.lib.util.KeyHashValPair;
 import com.datatorrent.lib.util.KeyValPair;
 
-/**
+/**   
  * Generates random KeyValPairs and optionally, keeps track
  * of the number of unique values per pair to emit to the
  * verification port.
@@ -74,7 +73,7 @@ public class RandomKeyValGenerator implements InputOperator
         verport.emit(new KeyHashValPair<Integer, Integer>(e.getKey(), e.getValue().size()));
       }
     }
-    valhistory.clear();
+    //valhistory.clear();
   }
 
   @Override

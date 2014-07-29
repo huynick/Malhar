@@ -71,10 +71,8 @@ public class CountVerifier implements Operator
   }
 
   @Override
-  public void beginWindow(long arg0)
-  {
-
-  }
+  public void beginWindow(long windowID)
+  {  }
   
   /**
    *  Checks that the key to value pairs are the same and counts the number of pairs
@@ -88,7 +86,7 @@ public class CountVerifier implements Operator
     int failureCount = 0;
     for (Map.Entry<Integer, Integer> e : receivedCount.entrySet()) {
       Integer key = e.getKey();
-      if (trueCount.get(key) != e.getValue()) {
+      if (!trueCount.get(key).equals(e.getValue())) {
         failureCount++;
       }
     }

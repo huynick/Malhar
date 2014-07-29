@@ -59,7 +59,6 @@ public class UniqueValueCount<K> extends BaseOperator {
     } ;
 
     public transient DefaultOutputPort<KeyValPair<K,Integer>> output = new DefaultOutputPort<KeyValPair<K,Integer>>(){
-
         @Override
         @SuppressWarnings({"rawtypes","unchecked"})
         public Unifier<KeyValPair<K, Integer>> getUnifier() {
@@ -94,7 +93,7 @@ public class UniqueValueCount<K> extends BaseOperator {
             this(null,null,null);
         }
 
-        private InternalCountOutput(K k, Integer count, Set<Object> interimUniqueValues){
+        public InternalCountOutput(K k, Integer count, Set<Object> interimUniqueValues){
             super(k,count);
             this.interimUniqueValues=interimUniqueValues;
         }
@@ -152,4 +151,4 @@ public class UniqueValueCount<K> extends BaseOperator {
         public void teardown() {
         }
     }
-}
+}	
