@@ -13,37 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.datatorrent.demos.valuecount;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+package com.datatorrent.demos.distributeddistinct;
 
 import org.apache.hadoop.conf.Configuration;
 
-import com.datatorrent.api.Context;
 import com.datatorrent.api.DAG;
 import com.datatorrent.api.StreamingApplication;
 import com.datatorrent.api.annotation.ApplicationAnnotation;
 import com.datatorrent.lib.algo.UniqueCounterValue;
 import com.datatorrent.lib.algo.UniqueValueCount;
-import com.datatorrent.lib.db.jdbc.JDBCLookupCacheBackedOperator;
 import com.datatorrent.lib.io.ConsoleOutputOperator;
 import com.datatorrent.lib.stream.StreamDuplicater;
 import com.datatorrent.lib.util.KeyValPair;
-import com.google.common.base.Strings;
-
 
 /**
- * This application demonstrates the UniqueValueCount operator. It uses an
- * input operator which generates random key value pairs and simultaneously
- * emits them to the UniqueValueCount operator and keeps track of the number 
- * of unique values per key to emit to the verifier.
+ * This application demonstrates the UniqueValueCount operator. It uses an input operator which generates random key
+ * value pairs and simultaneously emits them to the UniqueValueCount operator and keeps track of the number of unique
+ * values per key to emit to the verifier.
  */
-@ApplicationAnnotation(name = "ValCount")
+@ApplicationAnnotation(name = "ValueCount")
 public class Application implements StreamingApplication
 {
 
@@ -51,27 +39,26 @@ public class Application implements StreamingApplication
   public void populateDAG(DAG dag, Configuration conf)
   {
     RandomKeyValGenerator randGen = dag.addOperator("RandomGenerator", new RandomKeyValGenerator());
-    UniqueValueCount<Integer> valCount = dag.addOperator("ValueCounter", new UniqueValueCount<Integer>());
-    ConsoleOutputOperator consOut = dag.addOperator("ConsoleOutput", new ConsoleOutputOperator());
-    dag.getMeta(valCount).getAttributes().put(Context.OperatorContext.INITIAL_PARTITION_COUNT, 4);
+    UniqueValueCount<Integer> valCount = dag.addOperator("UniqueCounter", new UniqueValueCount<Integer>());
+    ConsoleOutputOperator consOut = dag.addOperator("Console", new ConsoleOutputOperator());
     StreamDuplicater<KeyValPair<Integer, Integer>> dup = dag.addOperator("Duplicator", new StreamDuplicater<KeyValPair<Integer, Integer>>());
     CountVerifier verifier = dag.addOperator("Verifier", new CountVerifier());
-    ConsoleOutputOperator successOutput = dag.addOperator("SuccessOutput", new ConsoleOutputOperator());
+    ConsoleOutputOperator successOutput = dag.addOperator("Success", new ConsoleOutputOperator());
     successOutput.setStringFormat("Success %d");
-    ConsoleOutputOperator failureOutput = dag.addOperator("FailureOutput", new ConsoleOutputOperator());
+    ConsoleOutputOperator failureOutput = dag.addOperator("Failure", new ConsoleOutputOperator());
     failureOutput.setStringFormat("Failure %d");
-    
+
     UniqueCounterValue<Integer> successcounter = dag.addOperator("SuccessCounter", new UniqueCounterValue<Integer>());
     UniqueCounterValue<Integer> failurecounter = dag.addOperator("FailureCounter", new UniqueCounterValue<Integer>());
 
-    dag.addStream("DataIn", randGen.outport, valCount.input);
-    dag.addStream("Duplicate", valCount.output, dup.data);
-    dag.addStream("Validate", dup.out1, verifier.recIn);
-    dag.addStream("TrueCountIn", randGen.verport, verifier.trueIn);
-    dag.addStream("SuccessCount", verifier.successPort, successcounter.data);
-    dag.addStream("FailureCount", verifier.failurePort, failurecounter.data);
-    dag.addStream("SuccessConsoleOut", successcounter.count, successOutput.input);
-    dag.addStream("FailureConsoleOut", failurecounter.count, failureOutput.input);
-    dag.addStream("ResultsOut", dup.out2, consOut.input);
+    dag.addStream("Events", randGen.outport, valCount.input);
+    dag.addStream("Duplicates", valCount.output, dup.data);
+    dag.addStream("Unverified", dup.out1, verifier.recIn);
+    dag.addStream("EventCount", randGen.verport, verifier.trueIn);
+    dag.addStream("Verified", verifier.successPort, successcounter.data);
+    dag.addStream("Failed", verifier.failurePort, failurecounter.data);
+    dag.addStream("SuccessCount", successcounter.count, successOutput.input);
+    dag.addStream("FailedCount", failurecounter.count, failureOutput.input);
+    dag.addStream("Output", dup.out2, consOut.input);
   }
 }

@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.datatorrent.demos.valuecount;
+package com.datatorrent.demos.distributeddistinct;
 
-import java.util.*;
-
-import org.apache.commons.lang3.mutable.MutableInt;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.datatorrent.api.Context.OperatorContext;
-import com.datatorrent.api.annotation.OutputPortFieldAnnotation;
 import com.datatorrent.api.DefaultInputPort;
 import com.datatorrent.api.DefaultOutputPort;
 import com.datatorrent.api.Operator;
+import com.datatorrent.api.annotation.OutputPortFieldAnnotation;
 import com.datatorrent.lib.util.KeyValPair;
 
 /**
- * An operator that takes two streams of Integer to Integer KeyValPairs
- * and verifies that the two streams output the same KeyValPairs within
- * a given window.
- *
+ * An operator that takes two streams of Integer to Integer KeyValPairs and verifies that the two streams output the
+ * same KeyValPairs within a given window.
+ * 
  */
 public class CountVerifier implements Operator
 {
@@ -72,14 +70,14 @@ public class CountVerifier implements Operator
 
   @Override
   public void beginWindow(long windowID)
-  {  }
-  
+  {
+  }
+
   /**
-   *  Checks that the key to value pairs are the same and counts the number of pairs
-   *  that are different. If there are failures, it will emit the number of failures
-   *  to the failure port. Otherwise, it will emit the number of keys to the success
-   *  port.
-   */ 
+   * Checks that the key to value pairs are the same and counts the number of pairs that are different. If there are
+   * failures, it will emit the number of failures to the failure port. Otherwise, it will emit the number of keys to
+   * the success port.
+   */
   @Override
   public void endWindow()
   {

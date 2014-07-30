@@ -18,13 +18,13 @@ package com.datatorrent.demos.valuecount;
 import org.junit.Test;
 
 import com.datatorrent.api.LocalMode;
-import com.datatorrent.demos.distributeddistinct.Application;
+import com.datatorrent.demos.distributeddistinct.StatefulApplication;
 
-public class ApplicationTest
+public class StatefulApplicationTest
 {
   @Test
-  public void testSomeMethod() throws Exception
+  public void testApplication() throws Exception
   {
-    LocalMode.runApp(new Application(), 15000);
+    LocalMode.runApp(new StatefulApplication(), 15000);
   }
 }

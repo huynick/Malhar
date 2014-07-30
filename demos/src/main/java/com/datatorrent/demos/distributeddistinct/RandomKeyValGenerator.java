@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.datatorrent.demos.valuecount;
+package com.datatorrent.demos.distributeddistinct;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-    
+
 import org.slf4j.*;
 
 import com.datatorrent.api.Context.OperatorContext;
@@ -30,11 +30,10 @@ import com.datatorrent.api.annotation.OutputPortFieldAnnotation;
 import com.datatorrent.lib.util.KeyHashValPair;
 import com.datatorrent.lib.util.KeyValPair;
 
-/**   
- * Generates random KeyValPairs and optionally, keeps track
- * of the number of unique values per pair to emit to the
+/**
+ * Generates random KeyValPairs and optionally, keeps track of the number of unique values per pair to emit to the
  * verification port.
- *
+ * 
  */
 public class RandomKeyValGenerator implements InputOperator
 {
@@ -45,7 +44,7 @@ public class RandomKeyValGenerator implements InputOperator
   protected Map<Integer, Set<Integer>> valhistory = new HashMap<Integer, Set<Integer>>();
   private Random rand = new Random();
   private boolean once;
-
+  private boolean clearHistory;
   @OutputPortFieldAnnotation(name = "keys", optional = false)
   public transient DefaultOutputPort<KeyValPair<Integer, Object>> outport = new DefaultOutputPort<KeyValPair<Integer, Object>>();
 
@@ -62,8 +61,7 @@ public class RandomKeyValGenerator implements InputOperator
   }
 
   /**
-   * Emits the total count of unique values per key as KeyHashValPairs to the
-   * verification port
+   * Emits the total count of unique values per key as KeyHashValPairs to the verification port
    */
   @Override
   public void endWindow()
@@ -73,7 +71,8 @@ public class RandomKeyValGenerator implements InputOperator
         verport.emit(new KeyHashValPair<Integer, Integer>(e.getKey(), e.getValue().size()));
       }
     }
-    //valhistory.clear();
+    if(clearHistory)
+      valhistory.clear();
   }
 
   @Override
@@ -128,7 +127,8 @@ public class RandomKeyValGenerator implements InputOperator
   /**
    * Sets the number of possible keys to numKeys
    * 
-   * @param numKeys the new number of possible keys
+   * @param numKeys
+   *          the new number of possible keys
    */
   public void setNumKeys(int numKeys)
   {
@@ -147,7 +147,9 @@ public class RandomKeyValGenerator implements InputOperator
 
   /**
    * Sets the number of possible values that can be emitted to numVals
-   * @param numVals the number of possible values that can be emitted
+   * 
+   * @param numVals
+   *          the number of possible values that can be emitted
    */
   public void setNumVals(int numVals)
   {
@@ -156,7 +158,9 @@ public class RandomKeyValGenerator implements InputOperator
 
   /**
    * Sets the number of KeyValPairs to be emitted to tupleBlast
-   * @param tupleBlast the new number of KeyValPairs to be emitted
+   * 
+   * @param tupleBlast
+   *          the new number of KeyValPairs to be emitted
    */
   public void setTupleBlast(int tupleBlast)
   {
