@@ -35,7 +35,6 @@ import net.spy.memcached.MemcachedClient;
  * @param <T> The tuple type.
  * @since 0.9.3
  */
-@ShipContainingJars(classes = {MemcachedClient.class})
 public abstract class AbstractMemcacheOutputOperator<T>
         extends AbstractStoreOutputOperator<T, MemcacheStore>
 {

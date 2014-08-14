@@ -26,7 +26,6 @@ import org.zeromq.ZMQ;
  *
  * @since 0.3.2
  */
-@ShipContainingJars(classes={ZMQ.class})
 public abstract class SimpleSinglePortZeroMQPullInputOperator<T> extends SimpleSinglePortInputOperator<T> implements Runnable
 {
   private transient ZMQ.Context context;

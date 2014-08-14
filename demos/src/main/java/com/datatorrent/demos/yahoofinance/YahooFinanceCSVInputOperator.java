@@ -40,7 +40,6 @@ import org.slf4j.LoggerFactory;
  *
  * @since 0.3.2
  */
-@ShipContainingJars(classes = {au.com.bytecode.opencsv.CSVReader.class})
 public class YahooFinanceCSVInputOperator extends SimpleSinglePortInputOperator<HashMap<String, Object>> implements Runnable
 {
   private static final Logger logger = LoggerFactory.getLogger(YahooFinanceCSVInputOperator.class);

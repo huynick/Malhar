@@ -36,7 +36,6 @@ import java.util.List;
  *
  * @since 0.9.0
  */
-@ShipContainingJars(classes = {com.mongodb.MongoClient.class})
 public class MongoDBOutputOperator extends BaseOperator {
 
     @NotNull

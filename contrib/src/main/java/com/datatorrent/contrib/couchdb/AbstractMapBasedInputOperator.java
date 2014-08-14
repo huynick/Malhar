@@ -15,13 +15,12 @@
  */
 package com.datatorrent.contrib.couchdb;
 
-import com.datatorrent.api.annotation.ShipContainingJars;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.ektorp.ViewResult;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.codehaus.jackson.map.ObjectMapper;
+import org.ektorp.ViewResult;
 
 /**
  * Couch-db input adaptor that emits a map.<br/>
@@ -31,7 +30,6 @@ import java.util.Map;
  *
  * @since 0.3.5
  */
-@ShipContainingJars(classes = {ObjectMapper.class})
 public abstract class AbstractMapBasedInputOperator extends AbstractCouchDBInputOperator<Map<Object, Object>>
 {
   private transient ObjectMapper mapper;
